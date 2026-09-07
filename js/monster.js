@@ -67,6 +67,7 @@ export const LEVELS = [
 
 const MONSTER_EMOJIS = ["👾", "🐲", "🐸", "👻", "🤖", "🐱"];
 
+// Uma fase especial usa as mesmas regras, mas com vida maior e barra propria.
 export function isBossLevel(levelNumber) {
   return levelNumber === 7;
 }
@@ -75,6 +76,7 @@ export function getLevel(levelNumber) {
   return LEVELS.find((level) => level.number === levelNumber) || LEVELS[0];
 }
 
+// Array.from cria uma lista de monstros. Cada item vira um objeto com dados proprios.
 export function createMonstersForLevel(levelNumber) {
   const level = getLevel(levelNumber);
   const totalMonsters = level.monsterCount;
@@ -123,6 +125,7 @@ export function moveMonster(monster, gameArea) {
   };
 }
 
+// Criamos um novo objeto em vez de alterar o antigo. Isso deixa a regra mais previsivel.
 export function damageMonster(monster) {
   const nextHealth = Math.max(0, monster.health - 1);
 

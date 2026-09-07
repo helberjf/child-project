@@ -11,6 +11,7 @@ const SOUND_RECIPES = {
   level: { frequency: 520, duration: 0.16, type: "triangle" }
 };
 
+// Todos os sons passam por esta funcao para o resto do jogo ficar simples.
 export function playSound(name) {
   if (name === "laser") {
     laserAudio.currentTime = 0;

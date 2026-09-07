@@ -10,6 +10,7 @@ const LESSON_HINTS = [
   "If decide vitoria ou derrota."
 ];
 
+// Guardamos todos os elementos em um objeto para evitar buscas repetidas.
 export function getElements() {
   return {
     customCursor: document.getElementById("custom-cursor"),
@@ -75,6 +76,7 @@ export function renderHud(elements, player, progress, levelNumber, secondsLeft, 
   elements.livesText.textContent = "❤️".repeat(player.lives) || "💔";
 }
 
+// Reaproveitar botoes deixa o alvo estavel enquanto o monstro se move.
 export function renderMonsters(elements, monsters, character, onHit) {
   const currentButtons = Array.from(elements.monsterLayer.children);
   const buttonsByMonster = new Map(
@@ -132,6 +134,7 @@ export function renderMedals(container, medals) {
   });
 }
 
+// As particulas sao emojis animados por CSS, sem usar Canvas.
 export function createExplosion(x, y) {
   ["💥", "✨", "⭐"].forEach((emoji, index) => {
     const particle = document.createElement("span");

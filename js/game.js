@@ -37,6 +37,7 @@ let timerId = 0;
 let animationId = 0;
 let gameIsRunning = false;
 
+// Comeca uma partida nova, mas respeita as escolhas feitas no menu.
 function startGame() {
   stopGameLoops();
 
@@ -60,6 +61,7 @@ function startGame() {
   playSound("click");
 }
 
+// Cada fase recria a lista de monstros usando as regras de monster.js.
 function setupLevel() {
   const level = getLevel(levelNumber);
   secondsLeft = SECONDS_PER_LEVEL;
@@ -83,6 +85,7 @@ function placeMonsterInsideGameArea(monster, index) {
   };
 }
 
+// requestAnimationFrame chama esta funcao muitas vezes por segundo.
 function updateGame() {
   if (!gameIsRunning) {
     return;
@@ -104,6 +107,7 @@ function countOneSecond() {
   }
 }
 
+// Um clique certo toca som, cria explosao e tira vida do monstro.
 function hitMonster(monsterId, event) {
   event.stopPropagation();
   playSound("laser");
@@ -141,6 +145,7 @@ function advanceLevel() {
   window.setTimeout(setupLevel, 600);
 }
 
+// Clicar no fundo ensina uma regra clara: mirar importa.
 function missMonster(event) {
   if (!gameIsRunning || event.target.closest(".monster")) {
     return;
@@ -170,6 +175,7 @@ function finishGame(won, message) {
   showScreen(elements, "end-screen");
 }
 
+// Recorde e medalhas ficam guardados no localStorage.
 function saveCurrentProgress() {
   const bestScore = Math.max(progress.bestScore, player.score);
   const medals = mergeMedals(progress.medals, player.score);

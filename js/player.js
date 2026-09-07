@@ -16,6 +16,7 @@ export const MEDALS = [
 
 const PROGRESS_KEY = "pegue-o-monstrinho-progress";
 
+// O jogador sempre comeca com pontos zerados e tres vidas.
 export function createInitialPlayer(choices = {}) {
   return {
     score: 0,
@@ -30,6 +31,7 @@ export function findUnlockedMedals(score) {
   return MEDALS.filter((medal) => score >= medal.points);
 }
 
+// Junta medalhas novas com as antigas sem repetir conquistas.
 export function mergeMedals(currentMedals, score) {
   const medalNames = new Set(currentMedals.map((medal) => medal.name));
   const unlockedMedals = findUnlockedMedals(score);
@@ -59,6 +61,7 @@ export function loadProgress(storage) {
   }
 }
 
+// O navegador salva texto, por isso transformamos o progresso em JSON.
 export function saveProgress(storage, progress) {
   storage.setItem(PROGRESS_KEY, JSON.stringify(progress));
 }
