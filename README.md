@@ -8,7 +8,17 @@ O projeto mistura diversao e aprendizado: cada fase apresenta uma regra nova do 
 
 ## Como executar
 
-Abra o arquivo `index.html` no navegador.
+Inicie um servidor local na pasta do projeto:
+
+```bash
+npm start
+```
+
+Depois abra:
+
+```text
+http://127.0.0.1:4173/
+```
 
 Para rodar os testes das regras do jogo:
 
