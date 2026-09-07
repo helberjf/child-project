@@ -1,5 +1,6 @@
 const monstro = document.getElementById("monstro");
 const textoPontos = document.getElementById("pontos");
+const som = new Audio("laserLarge_000.ogg");
 
 let pontos = 0;
 
@@ -16,6 +17,8 @@ monstro.style.top = y + "px";
 // quando clicar
 monstro.addEventListener("click", () => {
 
+    som.currentTime = 0;
+    som.play();
     pontos++;
     textoPontos.innerText = pontos;
 
@@ -62,5 +65,14 @@ function andar(){
     monstro.style.top = y + "px";
 
 }
+
+const mira = document.getElementById("mira");
+
+document.addEventListener("mousemove", (event)=>{
+
+    mira.style.left = event.clientX + "px";
+    mira.style.top = event.clientY + "px";
+
+});
 
 setInterval(andar,20);
