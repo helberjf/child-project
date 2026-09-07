@@ -1,6 +1,6 @@
 const monstro = document.getElementById("monstro");
 const textoPontos = document.getElementById("pontos");
-const som = new Audio("laserLarge_000.ogg");
+const som = new Audio("assets/sounds/laserLarge_000.ogg");
 
 let pontos = 0;
 
