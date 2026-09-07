@@ -8,7 +8,11 @@ monstro.addEventListener("click", function () {
     pontos = pontos + 1;
 
     textoPontos.innerText = pontos;
-
+    if (pontos === 5) {
+        alert("🏆 Você venceu!");
+        return (pontos = 0);
+    }
+    
     moverMonstro();
 
 });
@@ -23,3 +27,4 @@ function moverMonstro() {
     monstro.style.top = y + "px";
 
 }
+
