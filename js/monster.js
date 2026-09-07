@@ -1,99 +1,60 @@
-export const LEVELS = [
-  {
-    number: 1,
-    name: "Floresta",
-    background: "forest",
-    monsterCount: 1,
-    speed: 2,
-    size: 78,
-    health: 1
-  },
-  {
-    number: 2,
-    name: "Espaco",
-    background: "space",
-    monsterCount: 2,
-    speed: 2.4,
-    size: 76,
-    health: 1
-  },
-  {
-    number: 3,
-    name: "Castelo",
-    background: "castle",
-    monsterCount: 3,
-    speed: 2.6,
-    size: 74,
-    health: 1
-  },
-  {
-    number: 4,
-    name: "Vulcao",
-    background: "volcano",
-    monsterCount: 3,
-    speed: 3.8,
-    size: 74,
-    health: 1
-  },
-  {
-    number: 5,
-    name: "Gelo",
-    background: "ice",
-    monsterCount: 3,
-    speed: 3,
-    size: 58,
-    health: 1
-  },
-  {
-    number: 6,
-    name: "Desafio Relampago",
-    background: "rainbow",
-    monsterCount: 4,
-    speed: 4,
-    size: 56,
-    health: 1
-  },
-  {
-    number: 7,
-    name: "Chefao",
-    background: "boss",
-    monsterCount: 1,
-    speed: 4.4,
-    size: 124,
-    health: 6,
-    isBoss: true
-  }
-];
+import { getLevel, isBossLevel } from "./levels.js";
 
-const MONSTER_EMOJIS = ["👾", "🐲", "🐸", "👻", "🤖", "🐱"];
+export const MONSTER_CHARACTERS = ["👾", "👻", "🐲", "🐸", "🤖", "🐱", "🦄", "🐵"];
 
-// Uma fase especial usa as mesmas regras, mas com vida maior e barra propria.
-export function isBossLevel(levelNumber) {
-  return levelNumber === 7;
+const SPECIAL_MONSTERS = {
+  golden: { emoji: "🌟", points: 50, sizeBonus: 6, speedBonus: 0.25 },
+  fast: { emoji: "⚡", points: 30, sizeBonus: -8, speedBonus: 1.6, visibleForMs: 5200 }
+};
+
+export function pickFriendEmoji({ playerAvatar, random = Math.random }) {
+  const possibleFriends = MONSTER_CHARACTERS.filter((emoji) => emoji !== playerAvatar);
+  const index = Math.floor(random() * possibleFriends.length);
+
+  // Aqui escolhemos um personagem aleatorio para ser protegido na fase.
+  return possibleFriends[index];
 }
 
-export function getLevel(levelNumber) {
-  return LEVELS.find((level) => level.number === levelNumber) || LEVELS[0];
-}
-
-// Array.from cria uma lista de monstros. Cada item vira um objeto com dados proprios.
-export function createMonstersForLevel(levelNumber) {
+export function createMonstersForLevel(levelNumber, options = {}) {
   const level = getLevel(levelNumber);
-  const totalMonsters = level.monsterCount;
 
-  return Array.from({ length: totalMonsters }, (_, index) => ({
-    id: `${level.number}-${index}`,
-    x: 80 + index * 70,
-    y: 120 + index * 45,
-    speedX: level.speed + index * 0.35,
-    speedY: level.speed + index * 0.25,
-    emoji: level.isBoss ? "👑" : MONSTER_EMOJIS[index % MONSTER_EMOJIS.length],
-    health: level.health,
-    maxHealth: level.health,
-    direction: index % 2 === 0 ? 1 : -1,
-    size: level.size,
-    isBoss: Boolean(level.isBoss)
-  }));
+  if (isBossLevel(levelNumber)) {
+    return [createBossMonster(level)];
+  }
+
+  const friendEmoji = options.friendEmoji || pickFriendEmoji(options);
+  const monsters = [];
+
+  for (let index = 0; index < level.monsterCount; index++) {
+    const isFriend = index < level.friendCount;
+
+    monsters.push(createMonster({
+      id: `${level.number}-${index}`,
+      index,
+      level,
+      isFriend,
+      friendEmoji,
+      playerAvatar: options.playerAvatar || "",
+      now: options.now
+    }));
+  }
+
+  return mixMonsters(monsters);
+}
+
+export function createReplacementMonster(levelNumber, options = {}) {
+  const level = getLevel(levelNumber);
+  const id = `${level.number}-novo-${options.id || Date.now()}`;
+
+  return createMonster({
+    id,
+    index: options.index || 0,
+    level,
+    isFriend: Boolean(options.isFriend),
+    friendEmoji: options.friendEmoji,
+    playerAvatar: options.playerAvatar || "",
+    now: options.now
+  });
 }
 
 export function moveMonster(monster, gameArea) {
@@ -134,4 +95,88 @@ export function damageMonster(monster) {
     health: nextHealth,
     defeated: nextHealth === 0
   };
+}
+
+function createMonster({ id, index, level, isFriend, friendEmoji, playerAvatar, now = Date.now() }) {
+  const kind = isFriend ? "friend" : chooseMonsterKind(level, index);
+  const special = SPECIAL_MONSTERS[kind];
+  const emoji = isFriend ? friendEmoji : chooseCaptureEmoji(index, friendEmoji, playerAvatar, kind);
+  const size = Math.max(54, level.size + (special?.sizeBonus || 0));
+  const speed = level.speed + index * 0.18 + (special?.speedBonus || 0);
+
+  return {
+    id,
+    emoji,
+    x: 80 + index * 48,
+    y: 96 + index * 36,
+    speedX: index % 2 === 0 ? speed : -speed,
+    speedY: index % 3 === 0 ? speed : -speed,
+    direction: index % 2 === 0 ? 1 : -1,
+    size,
+    health: 1,
+    maxHealth: 1,
+    isFriend,
+    isBoss: false,
+    kind,
+    points: isFriend ? 0 : special?.points || 10,
+    expiresAt: special?.visibleForMs ? now + special.visibleForMs : null
+  };
+}
+
+function createBossMonster(level) {
+  return {
+    id: "boss",
+    emoji: "👹",
+    x: 140,
+    y: 120,
+    speedX: level.speed,
+    speedY: level.speed,
+    direction: 1,
+    size: level.size,
+    health: 6,
+    maxHealth: 6,
+    isFriend: false,
+    isBoss: true,
+    kind: "boss",
+    points: 250,
+    expiresAt: null
+  };
+}
+
+function chooseMonsterKind(level, index) {
+  if (level.specialTypes.includes("golden") && index === level.friendCount) {
+    return "golden";
+  }
+
+  if (level.specialTypes.includes("fast") && index === level.friendCount + 1) {
+    return "fast";
+  }
+
+  return "normal";
+}
+
+function chooseCaptureEmoji(index, friendEmoji, playerAvatar, kind) {
+  if (kind === "golden") {
+    return SPECIAL_MONSTERS.golden.emoji;
+  }
+
+  if (kind === "fast") {
+    return SPECIAL_MONSTERS.fast.emoji;
+  }
+
+  const choices = MONSTER_CHARACTERS.filter((emoji) => {
+    return emoji !== friendEmoji && emoji !== playerAvatar;
+  });
+
+  return choices[index % choices.length];
+}
+
+function mixMonsters(monsters) {
+  return monsters.sort((first, second) => {
+    if (first.isFriend === second.isFriend) {
+      return first.id.localeCompare(second.id);
+    }
+
+    return first.isFriend ? 1 : -1;
+  });
 }
