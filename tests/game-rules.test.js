@@ -8,6 +8,7 @@ import {
   isBossLevel
 } from "../js/monster.js";
 import { findUnlockedMedals } from "../js/player.js";
+import { loadProgress, saveProgress } from "../js/player.js";
 
 test("cada fase comum cria a quantidade certa de monstros", () => {
   const levelOne = createMonstersForLevel(1);
@@ -63,3 +64,35 @@ test("medalhas sao liberadas conforme a pontuacao aumenta", () => {
   assert.deepEqual(findUnlockedMedals(10).map((medal) => medal.emoji), ["🥉"]);
   assert.deepEqual(findUnlockedMedals(51).map((medal) => medal.emoji), ["🥉", "🥈", "🥇"]);
 });
+
+test("progresso salvo guarda recorde e medalhas no navegador", () => {
+  const storage = createFakeStorage();
+  const progress = {
+    bestScore: 30,
+    medals: [{ emoji: "🥉", name: "Bronze", points: 10 }]
+  };
+
+  saveProgress(storage, progress);
+
+  assert.deepEqual(loadProgress(storage), progress);
+});
+
+test("progresso quebrado volta para valores iniciais seguros", () => {
+  const storage = createFakeStorage();
+  storage.setItem("pegue-o-monstrinho-progress", "{quebrado");
+
+  assert.deepEqual(loadProgress(storage), { bestScore: 0, medals: [] });
+});
+
+function createFakeStorage() {
+  const data = new Map();
+
+  return {
+    getItem(key) {
+      return data.get(key) || null;
+    },
+    setItem(key, value) {
+      data.set(key, value);
+    }
+  };
+}

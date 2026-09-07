@@ -14,6 +14,8 @@ export const MEDALS = [
   { emoji: "👑", name: "Coroa", points: 100 }
 ];
 
+const PROGRESS_KEY = "pegue-o-monstrinho-progress";
+
 export function createInitialPlayer() {
   return {
     score: 0,
@@ -36,4 +38,34 @@ export function mergeMedals(currentMedals, score) {
     ...currentMedals,
     ...unlockedMedals.filter((medal) => !medalNames.has(medal.name))
   ];
+}
+
+export function loadProgress(storage) {
+  try {
+    const savedText = storage.getItem(PROGRESS_KEY);
+
+    if (!savedText) {
+      return createEmptyProgress();
+    }
+
+    const savedProgress = JSON.parse(savedText);
+
+    return {
+      bestScore: Number(savedProgress.bestScore) || 0,
+      medals: Array.isArray(savedProgress.medals) ? savedProgress.medals : []
+    };
+  } catch {
+    return createEmptyProgress();
+  }
+}
+
+export function saveProgress(storage, progress) {
+  storage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+}
+
+function createEmptyProgress() {
+  return {
+    bestScore: 0,
+    medals: []
+  };
 }
