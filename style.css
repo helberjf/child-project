@@ -1,0 +1,16 @@
+body {
+    text-align: center;
+    font-family: Arial;
+    background-color: lightblue;
+}
+
+h1 {
+    color: purple;
+}
+
+#monstro {
+    font-size: 80px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
