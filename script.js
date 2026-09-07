@@ -9,4 +9,17 @@ monstro.addEventListener("click", function () {
 
     textoPontos.innerText = pontos;
 
+    moverMonstro();
+
 });
+
+
+function moverMonstro() {
+
+    const x = Math.random() * 800;
+    const y = Math.random() * 400;
+
+    monstro.style.left = x + "px";
+    monstro.style.top = y + "px";
+
+}
