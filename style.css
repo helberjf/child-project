@@ -1,7 +1,7 @@
 body {
     text-align: center;
     font-family: Arial;
-    background-color: lightblue;
+    background-color: rgb(47, 40, 114);
 }
 
 h1 {
@@ -14,4 +14,17 @@ h1 {
     border: none;
     background: none;
     cursor: pointer;
+}
+
+#escolher-personagem {
+    position: fixed;
+
+    top: 20px;
+    left: 20px;
+
+    background-color: white;
+    padding: 10px;
+
+    border: 2px solid black;
+    border-radius: 10px;
 }

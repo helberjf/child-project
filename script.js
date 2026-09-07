@@ -3,17 +3,18 @@ const textoPontos = document.getElementById("pontos");
 
 let pontos = 0;
 
+
 monstro.addEventListener("click", function () {
 
     pontos = pontos + 1;
 
     textoPontos.innerText = pontos;
-    if (pontos === 5) {
-        alert("🏆 Você venceu!");
-        return (pontos = 0);
-    }
-    
+
     moverMonstro();
+
+    if (pontos === 10) {
+        alert("🏆 PARABÉNS! Você venceu!");
+    }
 
 });
 
@@ -28,3 +29,7 @@ function moverMonstro() {
 
 }
 
+
+function trocarMonstro(novoMonstro) {
+    monstro.innerText = novoMonstro;
+}
