@@ -40,7 +40,13 @@ let gameIsRunning = false;
 function startGame() {
   stopGameLoops();
 
-  player = createInitialPlayer();
+  const selectedCharacter = player.character;
+  const selectedCursor = player.cursor;
+
+  player = createInitialPlayer({
+    character: selectedCharacter,
+    cursor: selectedCursor
+  });
   progress = loadProgress(localStorage);
   player.medals = progress.medals;
   levelNumber = 1;

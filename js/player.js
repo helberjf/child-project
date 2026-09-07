@@ -16,12 +16,12 @@ export const MEDALS = [
 
 const PROGRESS_KEY = "pegue-o-monstrinho-progress";
 
-export function createInitialPlayer() {
+export function createInitialPlayer(choices = {}) {
   return {
     score: 0,
     lives: 3,
-    character: CHARACTER_OPTIONS[0],
-    cursor: CURSOR_OPTIONS[0],
+    character: choices.character || CHARACTER_OPTIONS[0],
+    cursor: choices.cursor || CURSOR_OPTIONS[0],
     medals: []
   };
 }

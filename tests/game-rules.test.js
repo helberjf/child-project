@@ -7,7 +7,7 @@ import {
   createMonstersForLevel,
   isBossLevel
 } from "../js/monster.js";
-import { findUnlockedMedals } from "../js/player.js";
+import { createInitialPlayer, findUnlockedMedals } from "../js/player.js";
 import { loadProgress, saveProgress } from "../js/player.js";
 
 test("cada fase comum cria a quantidade certa de monstros", () => {
@@ -63,6 +63,16 @@ test("medalhas sao liberadas conforme a pontuacao aumenta", () => {
   assert.deepEqual(findUnlockedMedals(9), []);
   assert.deepEqual(findUnlockedMedals(10).map((medal) => medal.emoji), ["🥉"]);
   assert.deepEqual(findUnlockedMedals(51).map((medal) => medal.emoji), ["🥉", "🥈", "🥇"]);
+});
+
+test("jogador inicial pode manter personagem e cursor escolhidos", () => {
+  const player = createInitialPlayer({
+    character: "🐱",
+    cursor: { emoji: "⭐", name: "Estrela" }
+  });
+
+  assert.equal(player.character, "🐱");
+  assert.deepEqual(player.cursor, { emoji: "⭐", name: "Estrela" });
 });
 
 test("progresso salvo guarda recorde e medalhas no navegador", () => {
