@@ -76,20 +76,32 @@ export function renderHud(elements, player, progress, levelNumber, secondsLeft, 
 }
 
 export function renderMonsters(elements, monsters, character, onHit) {
-  elements.monsterLayer.innerHTML = "";
+  const currentButtons = Array.from(elements.monsterLayer.children);
+  const buttonsByMonster = new Map(
+    currentButtons.map((button) => [button.dataset.monsterId, button])
+  );
+  const nextButtons = [];
 
   monsters.forEach((monster) => {
-    const button = document.createElement("button");
+    let button = buttonsByMonster.get(monster.id);
+
+    if (!button) {
+      button = document.createElement("button");
+      button.type = "button";
+      button.dataset.monsterId = monster.id;
+      button.addEventListener("click", (event) => onHit(monster.id, event));
+    }
+
     button.className = monster.isBoss ? "monster boss" : "monster";
-    button.type = "button";
     button.style.left = `${monster.x}px`;
     button.style.top = `${monster.y}px`;
     button.style.setProperty("--monster-size", `${monster.size}px`);
     button.textContent = monster.isBoss ? `${monster.emoji}${character}` : character;
     button.setAttribute("aria-label", monster.isBoss ? "Chefao" : "Monstrinho");
-    button.addEventListener("click", (event) => onHit(monster.id, event));
-    elements.monsterLayer.append(button);
+    nextButtons.push(button);
   });
+
+  elements.monsterLayer.replaceChildren(...nextButtons);
 }
 
 export function renderBossHealth(elements, boss) {
