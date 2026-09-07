@@ -7,6 +7,7 @@ import {
   createMonstersForLevel,
   isBossLevel
 } from "../js/monster.js";
+import { getNextLevelAction } from "../js/game-flow.js";
 import { createInitialPlayer, findUnlockedMedals } from "../js/player.js";
 import { loadProgress, saveProgress } from "../js/player.js";
 
@@ -73,6 +74,24 @@ test("jogador inicial pode manter personagem e cursor escolhidos", () => {
 
   assert.equal(player.character, "🐱");
   assert.deepEqual(player.cursor, { emoji: "⭐", name: "Estrela" });
+});
+
+test("proxima fase aparece imediatamente depois de acertar todos os monstros", () => {
+  const action = getNextLevelAction({ levelNumber: 1, finalLevel: 7 });
+
+  assert.deepEqual(action, {
+    type: "next-level",
+    levelNumber: 2,
+    delayMs: 0
+  });
+});
+
+test("fim da ultima fase vira vitoria", () => {
+  const action = getNextLevelAction({ levelNumber: 7, finalLevel: 7 });
+
+  assert.deepEqual(action, {
+    type: "victory"
+  });
 });
 
 test("progresso salvo guarda recorde e medalhas no navegador", () => {

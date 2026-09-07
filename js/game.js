@@ -5,6 +5,7 @@ import {
   getLevel,
   moveMonster
 } from "./monster.js";
+import { getNextLevelAction } from "./game-flow.js";
 import {
   createInitialPlayer,
   loadProgress,
@@ -135,14 +136,19 @@ function hitMonster(monsterId, event) {
 }
 
 function advanceLevel() {
-  if (levelNumber === FINAL_LEVEL) {
+  const nextAction = getNextLevelAction({
+    levelNumber,
+    finalLevel: FINAL_LEVEL
+  });
+
+  if (nextAction.type === "victory") {
     finishGame(true, "Voce venceu o chefao e completou o curso-jogo!");
     return;
   }
 
-  levelNumber++;
+  levelNumber = nextAction.levelNumber;
   playSound("level");
-  window.setTimeout(setupLevel, 600);
+  setupLevel();
 }
 
 // Clicar no fundo ensina uma regra clara: mirar importa.
