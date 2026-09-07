@@ -1,5 +1,7 @@
 import { getLevel, isBossLevel } from "./levels.js";
 
+export { FINAL_LEVEL, LEVELS, getLevel, isBossLevel } from "./levels.js";
+
 export const MONSTER_CHARACTERS = ["👾", "👻", "🐲", "🐸", "🤖", "🐱", "🦄", "🐵"];
 
 const SPECIAL_MONSTERS = {
