@@ -1,19 +1,35 @@
 body {
+    margin: 0;
+    overflow: hidden;
+
     text-align: center;
     font-family: Arial;
     background-color: rgb(47, 40, 114);
 }
 
 h1 {
-    color: purple;
+    color: white;
+    margin-top: 30px;
+}
+
+h2 {
+    color: white;
 }
 
 #monstro {
     position: absolute;
+
+    left: 200px;
+    top: 200px;
+
     font-size: 80px;
+
     border: none;
     background: none;
+
     cursor: pointer;
+
+    user-select: none;
 }
 
 #escolher-personagem {
@@ -22,9 +38,16 @@ h1 {
     top: 20px;
     left: 20px;
 
-    background-color: white;
-    padding: 10px;
+    background: white;
 
-    border: 2px solid black;
+    padding: 15px;
+
     border-radius: 10px;
+
+    box-shadow: 0 0 10px rgba(0,0,0,.3);
+}
+
+#escolher-personagem button{
+    font-size:30px;
+    margin:5px;
 }

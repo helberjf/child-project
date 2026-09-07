@@ -3,33 +3,64 @@ const textoPontos = document.getElementById("pontos");
 
 let pontos = 0;
 
+let x = 200;
+let y = 200;
 
-monstro.addEventListener("click", function () {
+let velocidadeX = 3;
+let velocidadeY = 3;
 
-    pontos = pontos + 1;
+// posição inicial
+monstro.style.left = x + "px";
+monstro.style.top = y + "px";
 
+// quando clicar
+monstro.addEventListener("click", () => {
+
+    pontos++;
     textoPontos.innerText = pontos;
 
     moverMonstro();
 
     if (pontos === 10) {
-        alert("🏆 PARABÉNS! Você venceu!");
+        alert("🏆 Você venceu!");
     }
 
 });
 
+// muda o personagem
+function trocarMonstro(novoMonstro){
+    monstro.innerText = novoMonstro;
+}
 
-function moverMonstro() {
+// teletransporta o monstro
+function moverMonstro(){
 
-    const x = Math.random() * 800;
-    const y = Math.random() * 400;
+    x = Math.random() * (window.innerWidth - monstro.offsetWidth);
+
+    y = Math.random() * (window.innerHeight - monstro.offsetHeight);
 
     monstro.style.left = x + "px";
     monstro.style.top = y + "px";
 
 }
 
+// faz ele andar
+function andar(){
 
-function trocarMonstro(novoMonstro) {
-    monstro.innerText = novoMonstro;
+    x += velocidadeX;
+    y += velocidadeY;
+
+    if(x <= 0 || x >= window.innerWidth - monstro.offsetWidth){
+        velocidadeX *= -1;
+    }
+
+    if(y <= 0 || y >= window.innerHeight - monstro.offsetHeight){
+        velocidadeY *= -1;
+    }
+
+    monstro.style.left = x + "px";
+    monstro.style.top = y + "px";
+
 }
+
+setInterval(andar,20);
