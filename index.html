@@ -2,36 +2,121 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pegue o Monstrinho</title>
-
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body class="background-forest">
+    <div id="custom-cursor" class="hidden" aria-hidden="true">🚀</div>
 
-    <h1>👾 Pegue o Monstrinho!</h1>
+    <main class="app-shell">
+        <section id="start-screen" class="screen screen-active">
+            <div class="menu-panel">
+                <p class="eyebrow">Curso-jogo de programacao</p>
+                <h1>PEGUE O MONSTRINHO</h1>
+                <p class="menu-text">Clique nos monstrinhos, avance de fase e aprenda como um jogo e feito por dentro.</p>
 
-    <p>Pontos: <span id="pontos">0</span></p>
+                <nav class="menu-actions" aria-label="Menu principal">
+                    <button class="primary-button" id="play-button">▶ Jogar</button>
+                    <button class="menu-button" data-open-screen="character-screen">🎨 Escolher personagem</button>
+                    <button class="menu-button" data-open-screen="settings-screen">⚙ Configuracoes</button>
+                    <button class="menu-button" data-open-screen="records-screen">🏆 Recordes</button>
+                    <button class="menu-button" data-open-screen="how-to-play-screen">❓ Como jogar</button>
+                </nav>
+            </div>
+        </section>
 
-    <div id="escolher-personagem">
-        <p>Escolha seu personagem:</p>
+        <section id="character-screen" class="screen">
+            <div class="menu-panel">
+                <h2>Escolha seu personagem</h2>
+                <div id="character-options" class="option-grid" aria-label="Personagens"></div>
+                <button class="menu-button" data-open-screen="start-screen">← Voltar</button>
+            </div>
+        </section>
 
-        <button onclick="trocarMonstro('👾')">👾</button>
-        <button onclick="trocarMonstro('🐲')">🐲</button>
-        <button onclick="trocarMonstro('👻')">👻</button>
-        <button onclick="trocarMonstro('🦖')">🦖</button>
-        <button onclick="trocarMonstro('🐸')">🐸</button>
-    </div>
+        <section id="settings-screen" class="screen">
+            <div class="menu-panel">
+                <h2>Escolha seu cursor</h2>
+                <div id="cursor-options" class="option-grid" aria-label="Cursores"></div>
+                <button class="menu-button" data-open-screen="start-screen">← Voltar</button>
+            </div>
+        </section>
 
-    <div id="mira"> 
-        <img src="assets/cursors/modern-sniper-crosshair-look.png" alt="Mira" width="120" height="100">
-    </div>
+        <section id="records-screen" class="screen">
+            <div class="menu-panel">
+                <h2>Recordes</h2>
+                <p class="record-line">Maior pontuacao: <strong id="best-score-menu">0</strong></p>
+                <div id="medals-menu" class="medal-row"></div>
+                <button class="menu-button" data-open-screen="start-screen">← Voltar</button>
+            </div>
+        </section>
 
-    <button id="monstro">
-        👾
-    </button>
+        <section id="how-to-play-screen" class="screen">
+            <div class="menu-panel text-panel">
+                <h2>Como jogar</h2>
+                <p>Toque nos monstrinhos para ganhar pontos. Se tocar fora deles, perde uma vida.</p>
+                <p>Cada fase muda uma regra: quantidade, velocidade, tamanho e, no final, um chefao com barra de vida.</p>
+                <p>Por tras disso existem variaveis, funcoes, eventos, arrays e objetos trabalhando juntos.</p>
+                <button class="menu-button" data-open-screen="start-screen">← Voltar</button>
+            </div>
+        </section>
 
-    <script src="js/game.js"></script>
+        <section id="game-screen" class="screen">
+            <header class="hud">
+                <div>
+                    <span class="hud-label">Fase</span>
+                    <strong id="level-text">1</strong>
+                </div>
+                <div>
+                    <span class="hud-label">Pontos</span>
+                    <strong id="score-text">0</strong>
+                </div>
+                <div>
+                    <span class="hud-label">Recorde</span>
+                    <strong id="best-score-game">0</strong>
+                </div>
+                <div>
+                    <span class="hud-label">Tempo</span>
+                    <strong>⏱ <span id="time-text">30</span></strong>
+                </div>
+                <div>
+                    <span class="hud-label">Vidas</span>
+                    <strong id="lives-text">❤️❤️❤️</strong>
+                </div>
+            </header>
 
+            <div id="game-area" class="game-area" aria-label="Area do jogo">
+                <div class="level-ribbon">
+                    <span id="level-name">Floresta</span>
+                    <span id="lesson-hint">Arrays guardam varios monstros.</span>
+                </div>
+
+                <div id="boss-panel" class="boss-panel hidden">
+                    <span>Chefao</span>
+                    <div class="boss-bar">
+                        <div id="boss-health" class="boss-health"></div>
+                    </div>
+                </div>
+
+                <div id="monster-layer" class="monster-layer"></div>
+            </div>
+        </section>
+
+        <section id="end-screen" class="screen">
+            <div class="menu-panel">
+                <p id="end-emoji" class="end-emoji">⭐</p>
+                <h2 id="end-title">Fim de jogo</h2>
+                <p id="end-message" class="menu-text"></p>
+                <p class="record-line">Pontuacao: <strong id="final-score">0</strong></p>
+                <p class="record-line">Recorde: <strong id="best-score-end">0</strong></p>
+                <div id="medals-end" class="medal-row"></div>
+                <button class="primary-button" id="play-again-button">▶ Jogar novamente</button>
+                <button class="menu-button" data-open-screen="start-screen">Menu inicial</button>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="js/game.js"></script>
 </body>
 </html>
