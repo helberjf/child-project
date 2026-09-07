@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Monstrinho">
+  <rect width="64" height="64" rx="8" fill="#22c55e"/>
+  <circle cx="32" cy="34" r="21" fill="#fffdf7"/>
+  <circle cx="24" cy="29" r="4" fill="#24304f"/>
+  <circle cx="40" cy="29" r="4" fill="#24304f"/>
+  <path d="M23 42c5 5 13 5 18 0" fill="none" stroke="#ec4899" stroke-width="4" stroke-linecap="round"/>
+  <path d="M18 16l6 6M46 16l-6 6" stroke="#24304f" stroke-width="4" stroke-linecap="round"/>
+</svg>
