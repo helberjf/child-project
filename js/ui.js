@@ -205,12 +205,15 @@ export function renderWordsLearned(elements, progress) {
 
   words.forEach((word) => {
     const card = document.createElement("article");
+    const title = document.createElement("strong");
+    const translation = document.createElement("span");
+    const stats = document.createElement("span");
+
     card.className = "word-card";
-    card.innerHTML = `
-      <strong>🇺🇸 ${word.palavra.toUpperCase()}</strong>
-      <span>${word.portugues || "palavra aprendida"}</span>
-      <span>✅ ${word.acertos} acertos · 💡 ${word.erros} revisoes</span>
-    `;
+    title.textContent = `🇺🇸 ${word.palavra.toUpperCase()}`;
+    translation.textContent = word.portugues || "palavra aprendida";
+    stats.textContent = `✅ ${word.acertos} acertos · 💡 ${word.erros} revisoes`;
+    card.append(title, translation, stats);
     elements.wordsLearnedList.append(card);
   });
 }
@@ -310,17 +313,17 @@ function createOptionButton(text, selected) {
 }
 
 function getMonsterClassName(monster) {
-  const classes = ["monster", monster.kind || "normal"];
+  const classes = new Set(["monster", monster.kind || "normal"]);
 
   if (monster.isFriend) {
-    classes.push("friend");
+    classes.add("friend");
   }
 
   if (monster.isBoss) {
-    classes.push("boss");
+    classes.add("boss");
   }
 
-  return classes.join(" ");
+  return Array.from(classes).join(" ");
 }
 
 function getMonsterLabel(monster) {
