@@ -77,7 +77,7 @@ export function renderHud(elements, player, progress, levelNumber, secondsLeft, 
 }
 
 // Reaproveitar botoes deixa o alvo estavel enquanto o monstro se move.
-export function renderMonsters(elements, monsters, character, onHit) {
+export function renderMonsters(elements, monsters, onHit) {
   const currentButtons = Array.from(elements.monsterLayer.children);
   const buttonsByMonster = new Map(
     currentButtons.map((button) => [button.dataset.monsterId, button])
@@ -94,16 +94,42 @@ export function renderMonsters(elements, monsters, character, onHit) {
       button.addEventListener("click", (event) => onHit(monster.id, event));
     }
 
-    button.className = monster.isBoss ? "monster boss" : "monster";
+    button.className = getMonsterClassName(monster);
     button.style.left = `${monster.x}px`;
     button.style.top = `${monster.y}px`;
     button.style.setProperty("--monster-size", `${monster.size}px`);
-    button.textContent = monster.isBoss ? `${monster.emoji}${character}` : character;
-    button.setAttribute("aria-label", monster.isBoss ? "Chefao" : "Monstrinho");
+    button.textContent = monster.emoji;
+    button.setAttribute("aria-label", getMonsterLabel(monster));
     nextButtons.push(button);
   });
 
   elements.monsterLayer.replaceChildren(...nextButtons);
+}
+
+function getMonsterClassName(monster) {
+  const classes = ["monster", monster.kind || "normal"];
+
+  if (monster.isFriend) {
+    classes.push("friend");
+  }
+
+  if (monster.isBoss) {
+    classes.push("boss");
+  }
+
+  return classes.join(" ");
+}
+
+function getMonsterLabel(monster) {
+  if (monster.isBoss) {
+    return "Chefao";
+  }
+
+  if (monster.isFriend) {
+    return "Monstro amigo, nao toque";
+  }
+
+  return "Monstrinho para capturar";
 }
 
 export function renderBossHealth(elements, boss) {

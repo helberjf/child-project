@@ -13,15 +13,36 @@ test("renderMonsters reaproveita botoes existentes para alvos animados", () => {
 
   const monster = createMonster("fase-1");
 
-  renderMonsters(elements, [monster], "👾", () => {});
+  renderMonsters(elements, [monster], () => {});
   const firstButton = elements.monsterLayer.children[0];
 
-  renderMonsters(elements, [{ ...monster, x: 120, y: 90 }], "👾", () => {});
+  renderMonsters(elements, [{ ...monster, x: 120, y: 90 }], () => {});
   const secondButton = elements.monsterLayer.children[0];
 
   assert.equal(firstButton, secondButton);
   assert.equal(secondButton.style.left, "120px");
   assert.equal(secondButton.style.top, "90px");
+});
+
+test("renderMonsters mostra emoji real e classes de amigo e especial", () => {
+  const fakeDocument = createFakeDocument();
+  globalThis.document = fakeDocument;
+
+  const elements = {
+    monsterLayer: fakeDocument.createElement("div")
+  };
+
+  renderMonsters(elements, [
+    { ...createMonster("amigo"), emoji: "🐸", isFriend: true, kind: "friend" },
+    { ...createMonster("dourado"), emoji: "🌟", kind: "golden" }
+  ], () => {});
+
+  const [friendButton, goldenButton] = elements.monsterLayer.children;
+
+  assert.equal(friendButton.textContent, "🐸");
+  assert.match(friendButton.className, /friend/);
+  assert.equal(goldenButton.textContent, "🌟");
+  assert.match(goldenButton.className, /golden/);
 });
 
 function createMonster(id) {
@@ -31,7 +52,9 @@ function createMonster(id) {
     y: 30,
     size: 70,
     emoji: "👾",
-    isBoss: false
+    isBoss: false,
+    isFriend: false,
+    kind: "normal"
   };
 }
 

@@ -155,12 +155,25 @@ test("medalhas combinam pontuacao, combo e acoes especiais", () => {
     score: 1000,
     bestCombo: 10,
     capturedSpecial: true,
-    cleanLevel: true
+    cleanLevel: true,
+    recoveredWithEnglish: true,
+    englishCorrect: 1,
+    uniqueEnglishCorrect: 10
   });
 
   assert.deepEqual(
     medals.map((medal) => medal.name),
-    ["Aprendiz", "Cacador", "Mestre", "Melhor Amigo", "Combo Master", "Reflexos Rapidos"]
+    [
+      "Aprendiz",
+      "Cacador",
+      "Mestre",
+      "Melhor Amigo",
+      "Combo Master",
+      "Reflexos Rapidos",
+      "English Hero",
+      "Primeira Palavra",
+      "Pequeno Poliglota"
+    ]
   );
 });
 
@@ -170,7 +183,13 @@ test("progresso salvo guarda recorde, combo, nivel e medalhas", () => {
     bestScore: 500,
     bestCombo: 6,
     bestLevel: 4,
-    medals: [{ id: "apprentice", emoji: "🥉", name: "Aprendiz", points: 100 }]
+    medals: [{ id: "apprentice", emoji: "🥉", name: "Aprendiz", points: 100 }],
+    words: {
+      dog: { palavra: "dog", acertos: 2, erros: 1 }
+    },
+    englishQuestions: 3,
+    englishCorrect: 2,
+    englishStreak: 2
   };
 
   saveProgress(storage, progress);
@@ -186,7 +205,11 @@ test("progresso quebrado volta para valores iniciais seguros", () => {
     bestScore: 0,
     bestCombo: 0,
     bestLevel: 1,
-    medals: []
+    medals: [],
+    words: {},
+    englishQuestions: 0,
+    englishCorrect: 0,
+    englishStreak: 0
   });
 });
 
