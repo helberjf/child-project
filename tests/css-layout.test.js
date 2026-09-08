@@ -18,7 +18,22 @@ test("telas de menu podem rolar quando a altura fica pequena", () => {
 
 test("larguras do jogo evitam 100vw para nao criar barra horizontal", () => {
   assert.doesNotMatch(css, /width:\s*min\((1020|1050)px,\s*calc\(100vw\s*-\s*16px\)\)/);
-  assert.match(css, /width:\s*min\(1050px,\s*calc\(100%\s*-\s*16px\)\)/);
+  assert.match(css, /width:\s*min\(1050px,\s*100%\)/);
+});
+
+test("hud mobile usa duas linhas de tres cards compactos", () => {
+  const hudRule = css.match(/\.hud\s*\{[\s\S]*?\}/)?.[0] || "";
+  const cardRule = css.match(/\.hud\s*>\s*div\s*\{[\s\S]*?\}/)?.[0] || "";
+  const smallScreenRule = css.match(/@media\s*\(max-width:\s*430px\)\s*\{[\s\S]*\}\s*$/)?.[0] || "";
+
+  assert.match(hudRule, /grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(cardRule, /padding:\s*4px\s+3px/);
+  assert.doesNotMatch(smallScreenRule, /grid-column:\s*1\s*\/\s*-1/);
+});
+
+test("arena mobile ocupa o espaco restante sem forcar rolagem", () => {
+  assert.match(css, /\.game-screen\s*\{[\s\S]*height:\s*100svh;[\s\S]*grid-template-rows:\s*auto\s+auto\s+minmax\(0,\s*1fr\);[\s\S]*overflow:\s*hidden;/);
+  assert.match(css, /\.game-area\s*\{[\s\S]*height:\s*100%;[\s\S]*min-height:\s*0;/);
 });
 
 test("placas do jogo nao bloqueiam clique nos monstrinhos", () => {
