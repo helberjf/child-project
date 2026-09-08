@@ -24,6 +24,21 @@ test("renderMonsters reaproveita botoes existentes para alvos animados", () => {
   assert.equal(secondButton.style.top, "90px");
 });
 
+test("renderMonsters mantem os alvos conectados enquanto eles se movem", () => {
+  const fakeDocument = createFakeDocument();
+  globalThis.document = fakeDocument;
+
+  const elements = {
+    monsterLayer: fakeDocument.createElement("div")
+  };
+  const monster = createMonster("alvo-estavel");
+
+  renderMonsters(elements, [monster], () => {});
+  renderMonsters(elements, [{ ...monster, x: 95, y: 110 }], () => {});
+
+  assert.equal(elements.monsterLayer.replaceChildrenCalls, 1);
+});
+
 test("renderMonsters mostra emoji real e classes de amigo e especial", () => {
   const fakeDocument = createFakeDocument();
   globalThis.document = fakeDocument;
@@ -88,10 +103,12 @@ function createFakeDocument() {
         textContent: "",
         type: "",
         listeners: {},
+        replaceChildrenCalls: 0,
         append(child) {
           this.children.push(child);
         },
         replaceChildren(...nextChildren) {
+          this.replaceChildrenCalls++;
           this.children = nextChildren;
         },
         addEventListener(type, listener) {

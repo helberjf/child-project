@@ -161,7 +161,12 @@ export function renderMonsters(elements, monsters, onHit) {
     nextButtons.push(button);
   });
 
-  elements.monsterLayer.replaceChildren(...nextButtons);
+  const structureChanged = currentButtons.length !== nextButtons.length
+    || currentButtons.some((button, index) => button !== nextButtons[index]);
+
+  if (structureChanged) {
+    elements.monsterLayer.replaceChildren(...nextButtons);
+  }
 }
 
 export function renderBossHealth(elements, boss) {
