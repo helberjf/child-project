@@ -1,18 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Preview do jogo Pegue o Monstrinho">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Preview do jogo Caca aos Monstrinhos">
   <rect width="960" height="540" fill="#22c55e"/>
   <circle cx="170" cy="120" r="115" fill="#facc15" opacity=".85"/>
   <circle cx="790" cy="110" r="80" fill="#ec4899" opacity=".55"/>
   <rect x="60" y="52" width="840" height="72" rx="8" fill="#fffdf7" opacity=".95"/>
-  <text x="95" y="98" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#24304f">Fase 1</text>
-  <text x="270" y="98" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#24304f">Pontos 25</text>
-  <text x="515" y="98" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#24304f">⏱ 18</text>
-  <text x="700" y="98" font-family="Arial, sans-serif" font-size="32" font-weight="700" fill="#24304f">❤️❤️❤️</text>
+  <text x="95" y="98" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#24304f">❤️❤️❤️</text>
+  <text x="270" y="98" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#24304f">⭐ 120</text>
+  <text x="455" y="98" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#24304f">⏱ 18</text>
+  <text x="620" y="98" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#24304f">COMBO x4</text>
   <rect x="90" y="154" width="780" height="320" rx="8" fill="#ffffff" opacity=".22" stroke="#ffffff" stroke-width="6"/>
   <circle cx="310" cy="300" r="70" fill="#fffdf7" opacity=".88"/>
   <text x="263" y="325" font-family="Arial, sans-serif" font-size="76">👾</text>
   <circle cx="620" cy="250" r="54" fill="#fffdf7" opacity=".88"/>
   <text x="584" y="272" font-family="Arial, sans-serif" font-size="58">🐸</text>
-  <text x="455" y="220" font-family="Arial, sans-serif" font-size="38">💥 ✨ ⭐</text>
+  <text x="455" y="220" font-family="Arial, sans-serif" font-size="38">✨ ⭐ 💫</text>
+  <rect x="612" y="352" width="175" height="46" rx="8" fill="#24304f" opacity=".78"/>
+  <text x="631" y="383" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#ffffff">❤️ Amigo 🐸</text>
   <rect x="120" y="405" width="460" height="44" rx="8" fill="#24304f" opacity=".78"/>
-  <text x="142" y="434" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#ffffff">Arrays guardam varios monstros.</text>
+  <text x="142" y="434" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#ffffff">Olhe bem antes de tocar.</text>
 </svg>

@@ -1,12 +1,12 @@
 import { CHARACTER_OPTIONS, CURSOR_OPTIONS, MEDALS } from "./player.js";
 
 const LESSON_HINTS = [
-  "Eventos percebem o toque.",
-  "Arrays guardam varios monstros.",
-  "Loops movem todos eles.",
-  "If protege o amigo.",
-  "Objetos guardam vida e pontos.",
-  "Funcoes vencem o chefao."
+  "Olhe bem antes de tocar.",
+  "Proteja o amigo da fase.",
+  "Capture os especiais rapidinho.",
+  "Respire e mire com calma.",
+  "O castelo esta cheio de surpresas.",
+  "O chefao precisa de varios toques."
 ];
 
 const MEDAL_DESCRIPTIONS = {
@@ -47,6 +47,7 @@ export function getElements() {
     timeText: document.getElementById("time-text"),
     livesText: document.getElementById("lives-text"),
     friendPill: document.getElementById("friend-pill"),
+    friendLabel: document.getElementById("friend-label"),
     friendText: document.getElementById("friend-text"),
     bossPanel: document.getElementById("boss-panel"),
     bossHealth: document.getElementById("boss-health"),
@@ -123,14 +124,14 @@ export function renderCountdown(elements, text) {
 export function renderHud(elements, player, level, secondsLeft, friendEmoji) {
   elements.levelText.textContent = level.number;
   elements.levelName.textContent = `${level.worldEmoji} ${level.name}`;
-  elements.lessonHint.textContent = LESSON_HINTS[level.number - 1] || "Programar tambem e brincar.";
+  elements.lessonHint.textContent = LESSON_HINTS[level.number - 1] || "A aventura continua!";
   elements.scoreText.textContent = player.score;
   elements.comboText.textContent = player.combo > 1 ? `x${player.combo}` : "x0";
   elements.comboText.classList.toggle("combo-hot", player.combo >= 5);
   elements.timeText.textContent = Math.max(0, secondsLeft);
   elements.livesText.textContent = "❤️".repeat(player.lives) + "🤍".repeat(Math.max(0, 3 - player.lives));
-  elements.friendPill.classList.toggle("hidden", level.isBoss);
-  elements.friendText.textContent = friendEmoji || "👑";
+  elements.friendLabel.textContent = level.isBoss ? "Chefao" : "Proteja";
+  elements.friendText.textContent = level.isBoss ? "👹" : friendEmoji;
 }
 
 // Reaproveitar botoes deixa o alvo estavel enquanto o monstro se move.

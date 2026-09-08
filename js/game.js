@@ -4,7 +4,10 @@ import {
   createReplacementMonster,
   damageMonster,
   moveMonster,
-  pickFriendEmoji
+  placeMonsterInArea,
+  placeMonstersInArea,
+  pickFriendEmoji,
+  separateMonstersInArea
 } from "./monster.js";
 import { getTimerEndAction, resolveMonsterTouch } from "./game-flow.js";
 import {
@@ -138,7 +141,8 @@ function beginLevel() {
     playerAvatar: player.avatar,
     friendEmoji,
     now: Date.now()
-  }).map(placeMonsterInsideGameArea);
+  });
+  monsters = placeMonstersInArea(monsters, getGameAreaSize());
 
   renderGame();
   gameIsRunning = true;
@@ -178,9 +182,12 @@ function updateGame(timestamp) {
 
   const area = getGameAreaSize();
   const now = Date.now();
-  monsters = monsters
-    .map((monster) => moveMonster(monster, area))
-    .map((monster, index) => replaceExpiredMonster(monster, index, now));
+  const movedMonsters = monsters.map((monster) => moveMonster(monster, area));
+  const separatedMonsters = separateMonstersInArea(movedMonsters, area);
+
+  monsters = separatedMonsters.map((monster, index) => {
+    return replaceExpiredMonster(monster, index, now, separatedMonsters);
+  });
 
   renderGame();
   animationId = window.requestAnimationFrame(updateGame);
@@ -285,20 +292,17 @@ function captureMonster(monster, x, y) {
   createMagicParticles(x, y);
   showFloatingText(result.feedback, x, y);
 
-  monsters = monsters.map((item, index) => {
-    if (item.id !== monster.id) {
-      return item;
-    }
+  const keptMonsters = monsters.filter((item) => item.id !== monster.id);
+  const replacementMonster = placeMonsterInArea(createReplacementMonster(levelNumber, {
+    id: ++replacementCounter,
+    index: monsters.indexOf(monster) + replacementCounter,
+    isFriend: false,
+    friendEmoji,
+    playerAvatar: player.avatar,
+    now: Date.now()
+  }), getGameAreaSize(), keptMonsters);
 
-    return placeMonsterInsideGameArea(createReplacementMonster(levelNumber, {
-      id: ++replacementCounter,
-      index: index + replacementCounter,
-      isFriend: false,
-      friendEmoji,
-      playerAvatar: player.avatar,
-      now: Date.now()
-    }));
-  });
+  monsters = [...keptMonsters, replacementMonster];
 
   saveCurrentProgress();
   renderGame();
@@ -450,31 +454,21 @@ function renderMenuProgress() {
   renderWordsLearned(elements, progress);
 }
 
-function placeMonsterInsideGameArea(monster) {
-  const area = getGameAreaSize();
-  const safeWidth = Math.max(0, area.width - monster.size);
-  const safeHeight = Math.max(0, area.height - monster.size);
-
-  return {
-    ...monster,
-    x: Math.floor(Math.random() * safeWidth),
-    y: Math.floor(Math.random() * safeHeight)
-  };
-}
-
-function replaceExpiredMonster(monster, index, now) {
+function replaceExpiredMonster(monster, index, now, currentMonsters) {
   if (!monster.expiresAt || now < monster.expiresAt) {
     return monster;
   }
 
-  return placeMonsterInsideGameArea(createReplacementMonster(levelNumber, {
+  const otherMonsters = currentMonsters.filter((item) => item.id !== monster.id);
+
+  return placeMonsterInArea(createReplacementMonster(levelNumber, {
     id: ++replacementCounter,
     index: index + replacementCounter,
     isFriend: false,
     friendEmoji,
     playerAvatar: player.avatar,
     now
-  }));
+  }), getGameAreaSize(), otherMonsters);
 }
 
 function stopGameLoops() {

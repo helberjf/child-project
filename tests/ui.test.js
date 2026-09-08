@@ -45,6 +45,24 @@ test("renderMonsters mostra emoji real e classes de amigo e especial", () => {
   assert.match(goldenButton.className, /golden/);
 });
 
+test("renderMonsters liga o clique ao id correto do monstro", () => {
+  const fakeDocument = createFakeDocument();
+  globalThis.document = fakeDocument;
+
+  const elements = {
+    monsterLayer: fakeDocument.createElement("div")
+  };
+  let clickedMonsterId = "";
+
+  renderMonsters(elements, [createMonster("alvo-clicavel")], (monsterId) => {
+    clickedMonsterId = monsterId;
+  });
+
+  elements.monsterLayer.children[0].click();
+
+  assert.equal(clickedMonsterId, "alvo-clicavel");
+});
+
 function createMonster(id) {
   return {
     id,
@@ -69,13 +87,22 @@ function createFakeDocument() {
         style: createFakeStyle(),
         textContent: "",
         type: "",
+        listeners: {},
         append(child) {
           this.children.push(child);
         },
         replaceChildren(...nextChildren) {
           this.children = nextChildren;
         },
-        addEventListener() {},
+        addEventListener(type, listener) {
+          this.listeners[type] = listener;
+        },
+        click() {
+          this.listeners.click?.({
+            stopPropagation() {},
+            preventDefault() {}
+          });
+        },
         remove() {
           this.wasRemoved = true;
         },

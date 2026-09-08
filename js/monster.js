@@ -88,6 +88,65 @@ export function moveMonster(monster, gameArea) {
   };
 }
 
+export function placeMonstersInArea(monsters, gameArea, options = {}) {
+  const placedMonsters = [];
+
+  monsters.forEach((monster) => {
+    placedMonsters.push(placeMonsterInArea(monster, gameArea, placedMonsters, options));
+  });
+
+  return placedMonsters;
+}
+
+export function separateMonstersInArea(monsters, gameArea, options = {}) {
+  const separatedMonsters = [];
+
+  monsters.forEach((monster) => {
+    if (separatedMonsters.some((placed) => monstersOverlap(monster, placed, options.gap ?? 8))) {
+      separatedMonsters.push(placeMonsterInArea(reverseMonster(monster), gameArea, separatedMonsters, options));
+      return;
+    }
+
+    separatedMonsters.push(monster);
+  });
+
+  return separatedMonsters;
+}
+
+export function placeMonsterInArea(monster, gameArea, placedMonsters = [], options = {}) {
+  const random = options.random || Math.random;
+  const gap = options.gap ?? 8;
+  const safeWidth = Math.max(0, gameArea.width - monster.size);
+  const safeHeight = Math.max(0, gameArea.height - monster.size);
+
+  for (let attempt = 0; attempt < 50; attempt++) {
+    const candidate = {
+      ...monster,
+      x: Math.round(random() * safeWidth),
+      y: Math.round(random() * safeHeight)
+    };
+
+    if (!placedMonsters.some((placed) => monstersOverlap(candidate, placed, gap))) {
+      return candidate;
+    }
+  }
+
+  return findGridSpot(monster, gameArea, placedMonsters, gap) || {
+    ...monster,
+    x: 0,
+    y: 0
+  };
+}
+
+export function monstersOverlap(firstMonster, secondMonster, gap = 0) {
+  return !(
+    firstMonster.x + firstMonster.size + gap <= secondMonster.x ||
+    secondMonster.x + secondMonster.size + gap <= firstMonster.x ||
+    firstMonster.y + firstMonster.size + gap <= secondMonster.y ||
+    secondMonster.y + secondMonster.size + gap <= firstMonster.y
+  );
+}
+
 // Criamos um novo objeto em vez de alterar o antigo. Isso deixa a regra mais previsivel.
 export function damageMonster(monster) {
   const nextHealth = Math.max(0, monster.health - 1);
@@ -96,6 +155,32 @@ export function damageMonster(monster) {
     ...monster,
     health: nextHealth,
     defeated: nextHealth === 0
+  };
+}
+
+function findGridSpot(monster, gameArea, placedMonsters, gap) {
+  const safeWidth = Math.max(0, gameArea.width - monster.size);
+  const safeHeight = Math.max(0, gameArea.height - monster.size);
+  const step = monster.size + gap;
+
+  for (let y = 0; y <= safeHeight; y += step) {
+    for (let x = 0; x <= safeWidth; x += step) {
+      const candidate = { ...monster, x, y };
+
+      if (!placedMonsters.some((placed) => monstersOverlap(candidate, placed, gap))) {
+        return candidate;
+      }
+    }
+  }
+
+  return null;
+}
+
+function reverseMonster(monster) {
+  return {
+    ...monster,
+    speedX: -monster.speedX,
+    speedY: -monster.speedY
   };
 }
 

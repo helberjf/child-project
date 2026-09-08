@@ -1,14 +1,14 @@
-# Pegue o Monstrinho
+# Caça aos Monstrinhos
 
 ![Preview do jogo](assets/images/game-preview.svg)
 
-Um pequeno jogo educativo feito com HTML, CSS e JavaScript puro para ensinar programacao para criancas de aproximadamente 8 anos.
+Jogo infantil educativo feito com HTML, CSS e JavaScript puro para criancas de aproximadamente 8 anos.
 
-O projeto mistura diversao e aprendizado: cada fase apresenta uma regra nova do jogo e tambem aponta para um conceito de programacao, como eventos, variaveis, funcoes, arrays, objetos, animacoes, sons e `localStorage`.
+A crianca captura monstrinhos, protege o monstro amigo de cada fase, cria combos e pode recuperar vidas respondendo um desafio rapido de ingles.
 
 ## Como executar
 
-Inicie um servidor local na pasta do projeto:
+Use um servidor local na pasta do projeto:
 
 ```bash
 npm start
@@ -20,7 +20,9 @@ Depois abra:
 http://127.0.0.1:4173/
 ```
 
-Para rodar os testes das regras do jogo:
+Abrir o `index.html` direto pelo explorador pode nao funcionar corretamente, porque o navegador bloqueia alguns imports de modulos JavaScript quando a pagina roda como arquivo local.
+
+## Testes
 
 ```bash
 npm test
@@ -28,33 +30,19 @@ npm test
 
 Nao e preciso instalar bibliotecas externas.
 
-## Objetivos
+## Recursos
 
-- Ensinar programacao passo a passo.
-- Manter o codigo simples, modular e comentado.
-- Criar uma experiencia divertida em computador, tablet e celular.
-- Mostrar como um jogo real pode ser construido com tecnologias basicas da web.
-
-## Tecnologias
-
-- HTML
-- CSS
-- JavaScript puro
-- `localStorage`
-- Testes com o executor nativo do Node.js
-
-## Recursos do jogo
-
-- Menu inicial com jogar, personagem, configuracoes, recordes e como jogar.
-- Fases progressivas com mais monstros, velocidade maior, monstros menores e chefao.
-- Sistema de vidas e Game Over.
-- Cronometro de 30 segundos por fase.
-- Recorde salvo no navegador.
-- Medalhas por pontuacao.
-- Explosoes com CSS, sem Canvas.
+- Menu com jogar, personagens, recordes, medalhas, palavras, configuracoes e como jogar.
+- Aviso antes de cada fase mostrando qual monstrinho e amigo.
+- Countdown `3, 2, 1, VAI!` antes da acao comecar.
+- Vidas, pontuacao, cronometro e combo no HUD.
+- Monstros amigos, normais, dourados, rapidos e chefao final.
+- Mundos com fundos diferentes: floresta, gelo, vulcao, espaco, castelo e chefao.
+- Desafio de ingles para recuperar uma vida.
+- Banco com aproximadamente 200 palavras infantis em `data/palavras.js`.
+- Palavras aprendidas salvas no `localStorage`.
 - Sons centralizados em `js/sounds.js`.
-- Cursores infantis por emoji.
-- Fundos diferentes por fase.
+- Movimento com `requestAnimationFrame`, sem Canvas e sem bibliotecas externas.
 
 ## Estrutura
 
@@ -66,35 +54,29 @@ child-project
 ├── js
 │   ├── game.js
 │   ├── monster.js
+│   ├── levels.js
 │   ├── player.js
 │   ├── ui.js
-│   └── sounds.js
+│   ├── sounds.js
+│   ├── english.js
+│   └── storage.js
+├── data
+│   └── palavras.js
 ├── assets
 │   ├── images
 │   ├── sounds
 │   ├── cursors
 │   └── backgrounds
 ├── aulas
-│   ├── aula-01.md
-│   ├── aula-02.md
-│   └── ...
-├── tests
-│   └── game-rules.test.js
-└── README.md
+└── tests
 ```
 
-## Como contribuir
+## Ideia educativa
 
-1. Escolha uma melhoria pequena.
-2. Leia a aula relacionada ao tema.
-3. Altere apenas os arquivos necessarios.
-4. Rode `npm test`.
-5. Faca um commit com uma mensagem clara.
+O codigo foi separado para mostrar conceitos simples:
 
-Boas ideias para comecar:
-
-- Adicionar uma nova fase.
-- Criar mais medalhas.
-- Melhorar os sons.
-- Desenhar novos fundos.
-- Criar exercicios extras nas aulas.
+- arrays para listas de monstros e palavras;
+- objetos para guardar vida, pontos e posicao;
+- funcoes para criar perguntas e fases;
+- `if` para decidir acerto, amigo, chefao ou recuperacao;
+- `localStorage` para salvar recordes e aprendizado.

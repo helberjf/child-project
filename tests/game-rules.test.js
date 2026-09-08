@@ -5,8 +5,11 @@ import { FINAL_LEVEL, getLevel, isBossLevel } from "../js/levels.js";
 import {
   createMonstersForLevel,
   damageMonster,
+  monstersOverlap,
   moveMonster,
-  pickFriendEmoji
+  placeMonstersInArea,
+  pickFriendEmoji,
+  separateMonstersInArea
 } from "../js/monster.js";
 import { getNextLevelAction, getTimerEndAction, resolveMonsterTouch } from "../js/game-flow.js";
 import { createInitialPlayer, findUnlockedMedals } from "../js/player.js";
@@ -75,6 +78,53 @@ test("monstro rebate nas bordas da area do jogo", () => {
   assert.equal(movedMonster.x, 180);
   assert.equal(movedMonster.speedX, -12);
   assert.equal(movedMonster.y, 53);
+});
+
+test("monstros nascem dentro da arena sem ficar um em cima do outro", () => {
+  const monsters = Array.from({ length: 4 }, (_, index) => ({
+    id: `monstro-${index}`,
+    x: 0,
+    y: 0,
+    size: 78
+  }));
+  const placedMonsters = placeMonstersInArea(monsters, {
+    width: 320,
+    height: 520
+  }, {
+    random: () => 0
+  });
+
+  assert.equal(placedMonsters.length, monsters.length);
+
+  placedMonsters.forEach((monster) => {
+    assert.ok(monster.x >= 0);
+    assert.ok(monster.y >= 0);
+    assert.ok(monster.x + monster.size <= 320);
+    assert.ok(monster.y + monster.size <= 520);
+  });
+
+  for (let firstIndex = 0; firstIndex < placedMonsters.length; firstIndex++) {
+    for (let secondIndex = firstIndex + 1; secondIndex < placedMonsters.length; secondIndex++) {
+      assert.equal(monstersOverlap(placedMonsters[firstIndex], placedMonsters[secondIndex], 8), false);
+    }
+  }
+});
+
+test("monstros que se encostam durante o movimento sao separados", () => {
+  const monsters = [
+    { id: "primeiro", x: 20, y: 20, size: 78, speedX: 2, speedY: 2 },
+    { id: "segundo", x: 40, y: 40, size: 78, speedX: -2, speedY: -2 }
+  ];
+  const separatedMonsters = separateMonstersInArea(monsters, {
+    width: 320,
+    height: 520
+  }, {
+    random: () => 0
+  });
+
+  assert.equal(monstersOverlap(separatedMonsters[0], separatedMonsters[1], 8), false);
+  assert.equal(separatedMonsters[1].speedX, 2);
+  assert.equal(separatedMonsters[1].speedY, 2);
 });
 
 test("toque em monstro capturavel aumenta combo e pontuacao", () => {

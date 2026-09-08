@@ -241,7 +241,7 @@ h2 {
 
 .countdown-box {
     display: grid;
-    width: min(360px, calc(100vw - 40px));
+    width: min(360px, calc(100% - 40px));
     aspect-ratio: 1;
     place-items: center;
     color: white;
@@ -266,7 +266,7 @@ h2 {
     position: relative;
     z-index: 5;
     display: grid;
-    width: min(1020px, calc(100vw - 16px));
+    width: min(1020px, calc(100% - 16px));
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
     margin: 0 auto 8px;
@@ -298,14 +298,33 @@ h2 {
     white-space: nowrap;
 }
 
+.friend-pill {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.friend-pill strong {
+    line-height: 1;
+}
+
 #combo-text.combo-hot {
     color: var(--pink);
 }
 
+.game-info-row {
+    display: grid;
+    width: min(1050px, calc(100% - 16px));
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 0 auto 8px;
+}
+
 .game-area {
     position: relative;
-    width: min(1050px, calc(100vw - 16px));
-    height: calc(100svh - 188px);
+    width: min(1050px, calc(100% - 16px));
+    height: calc(100svh - 238px);
     min-height: 390px;
     max-height: 720px;
     margin: 0 auto;
@@ -318,29 +337,20 @@ h2 {
 }
 
 .level-ribbon,
-.friend-pill {
-    position: absolute;
-    z-index: 2;
+.boss-panel {
     display: flex;
     gap: 8px;
     align-items: center;
-    max-width: calc(100% - 24px);
     padding: 9px 11px;
     color: white;
     background: rgba(36, 48, 79, 0.76);
     border-radius: 8px;
     font-weight: 800;
+    pointer-events: none;
 }
 
 .level-ribbon {
-    left: 12px;
-    bottom: 12px;
     flex-wrap: wrap;
-}
-
-.friend-pill {
-    top: 12px;
-    left: 12px;
 }
 
 #lesson-hint {
@@ -370,6 +380,7 @@ h2 {
     line-height: 1;
     user-select: none;
     will-change: transform, left, top;
+    z-index: 2;
 }
 
 .monster::after {
@@ -388,33 +399,30 @@ h2 {
 .monster.friend {
     background: #fff0f3;
     box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.2), 0 12px 22px rgba(36, 48, 79, 0.2);
+    z-index: 1;
 }
 
 .monster.golden {
     background: #fff3b0;
     box-shadow: 0 0 0 6px rgba(250, 204, 21, 0.28), 0 14px 28px rgba(36, 48, 79, 0.25);
+    z-index: 3;
 }
 
 .monster.fast {
     background: #dff7ff;
     box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.26), 0 14px 28px rgba(36, 48, 79, 0.25);
+    z-index: 3;
 }
 
 .monster.boss {
     background: #ffe3a6;
     box-shadow: 0 0 0 8px rgba(250, 204, 21, 0.24), 0 18px 34px rgba(36, 48, 79, 0.32);
+    z-index: 4;
 }
 
 .boss-panel {
-    position: absolute;
-    z-index: 3;
-    top: 12px;
-    right: 12px;
-    width: min(330px, calc(100% - 24px));
     padding: 10px 12px;
-    color: white;
     background: rgba(36, 48, 79, 0.84);
-    border-radius: 8px;
 }
 
 .boss-bar {
@@ -594,7 +602,7 @@ h2 {
     }
 
     .hud {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
@@ -604,8 +612,16 @@ h2 {
     }
 
     .game-area {
-        height: calc(100svh - 112px);
+        height: calc(100svh - 160px);
         min-height: 520px;
+    }
+
+    .hud {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .game-info-row {
+        grid-template-columns: 1fr minmax(260px, 330px);
     }
 }
 
@@ -619,7 +635,7 @@ h2 {
     }
 
     .game-area {
-        height: calc(100svh - 216px);
+        height: calc(100svh - 268px);
         min-height: 360px;
     }
 
@@ -629,10 +645,4 @@ h2 {
         gap: 3px;
     }
 
-    .boss-panel {
-        top: 58px;
-        right: 12px;
-        left: 12px;
-        width: auto;
-    }
 }

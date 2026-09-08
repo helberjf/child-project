@@ -1,7 +1,7 @@
 {
-  "name": "pegue-o-monstrinho",
+  "name": "caca-aos-monstrinhos",
   "version": "1.0.0",
-  "description": "Jogo educativo em HTML, CSS e JavaScript puro para ensinar programacao para criancas.",
+  "description": "Jogo infantil educativo em HTML, CSS e JavaScript puro com atencao, memoria e ingles.",
   "type": "module",
   "scripts": {
     "start": "python -m http.server 4173",
