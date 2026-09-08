@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pegue o Monstrinho</title>
+    <title>Caça aos Monstrinhos</title>
     <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -14,16 +14,18 @@
     <main class="app-shell">
         <section id="start-screen" class="screen screen-active">
             <div class="menu-panel">
-                <p class="eyebrow">Curso-jogo de programacao</p>
-                <h1>PEGUE O MONSTRINHO</h1>
-                <p class="menu-text">Clique nos monstrinhos, avance de fase e aprenda como um jogo e feito por dentro.</p>
+                <p class="eyebrow">Aventura educativa</p>
+                <h1>👾 CAÇA AOS MONSTRINHOS</h1>
+                <p class="menu-text">Capture os monstrinhos certos, proteja o amigo da fase e use ingles para recuperar coracoes.</p>
 
                 <nav class="menu-actions" aria-label="Menu principal">
-                    <button class="primary-button" id="play-button">▶ Jogar</button>
-                    <button class="menu-button" data-open-screen="character-screen">🎨 Escolher personagem</button>
-                    <button class="menu-button" data-open-screen="settings-screen">⚙ Configuracoes</button>
-                    <button class="menu-button" data-open-screen="records-screen">🏆 Recordes</button>
-                    <button class="menu-button" data-open-screen="how-to-play-screen">❓ Como jogar</button>
+                    <button class="primary-button" id="play-button" type="button">▶ Jogar</button>
+                    <button class="menu-button" data-open-screen="character-screen" type="button">🎨 Personagens</button>
+                    <button class="menu-button" data-open-screen="records-screen" type="button">🏆 Recordes</button>
+                    <button class="menu-button" data-open-screen="medals-screen" type="button">🏅 Medalhas</button>
+                    <button class="menu-button" data-open-screen="words-screen" type="button">📚 Palavras</button>
+                    <button class="menu-button" data-open-screen="settings-screen" type="button">⚙ Configuracoes</button>
+                    <button class="menu-button" data-open-screen="how-to-play-screen" type="button">❓ Como jogar</button>
                 </nav>
             </div>
         </section>
@@ -31,70 +33,115 @@
         <section id="character-screen" class="screen">
             <div class="menu-panel">
                 <h2>Escolha seu personagem</h2>
+                <p class="menu-text">Seu personagem nao aparece como monstrinho capturavel durante a partida.</p>
                 <div id="character-options" class="option-grid" aria-label="Personagens"></div>
-                <button class="menu-button" data-open-screen="start-screen">← Voltar</button>
+                <button class="menu-button back-button" data-open-screen="start-screen" type="button">← Voltar</button>
             </div>
         </section>
 
         <section id="settings-screen" class="screen">
             <div class="menu-panel">
-                <h2>Escolha seu cursor</h2>
+                <h2>Configuracoes</h2>
+                <p class="menu-text">Escolha o cursor e deixe a aventura com a sua cara.</p>
                 <div id="cursor-options" class="option-grid" aria-label="Cursores"></div>
-                <button class="menu-button" data-open-screen="start-screen">← Voltar</button>
+                <button class="menu-button" id="sound-toggle" type="button">🔊 Som ligado</button>
+                <button class="menu-button back-button" data-open-screen="start-screen" type="button">← Voltar</button>
             </div>
         </section>
 
         <section id="records-screen" class="screen">
             <div class="menu-panel">
                 <h2>Recordes</h2>
-                <p class="record-line">Maior pontuacao: <strong id="best-score-menu">0</strong></p>
-                <div id="medals-menu" class="medal-row"></div>
-                <button class="menu-button" data-open-screen="start-screen">← Voltar</button>
+                <div class="stat-list">
+                    <p>⭐ Maior pontuacao: <strong id="best-score-menu">0</strong></p>
+                    <p>🔥 Maior combo: <strong id="best-combo-menu">0</strong></p>
+                    <p>🌎 Maior nivel: <strong id="best-level-menu">1</strong></p>
+                </div>
+                <button class="menu-button back-button" data-open-screen="start-screen" type="button">← Voltar</button>
+            </div>
+        </section>
+
+        <section id="medals-screen" class="screen">
+            <div class="menu-panel">
+                <h2>Medalhas</h2>
+                <div id="medals-menu" class="medal-list"></div>
+                <button class="menu-button back-button" data-open-screen="start-screen" type="button">← Voltar</button>
+            </div>
+        </section>
+
+        <section id="words-screen" class="screen">
+            <div class="menu-panel">
+                <h2>Palavras aprendidas</h2>
+                <div id="words-learned-list" class="words-list"></div>
+                <button class="menu-button back-button" data-open-screen="start-screen" type="button">← Voltar</button>
             </div>
         </section>
 
         <section id="how-to-play-screen" class="screen">
             <div class="menu-panel text-panel">
                 <h2>Como jogar</h2>
-                <p>Toque nos monstrinhos para ganhar pontos. Se tocar fora deles, perde uma vida.</p>
-                <p>Cada fase muda uma regra: quantidade, velocidade, tamanho e, no final, um chefao com barra de vida.</p>
-                <p>Por tras disso existem variaveis, funcoes, eventos, arrays e objetos trabalhando juntos.</p>
-                <button class="menu-button" data-open-screen="start-screen">← Voltar</button>
+                <p>👾 Toque nos monstrinhos para ganhar pontos.</p>
+                <p>⭐ Acerte varios rapidamente para criar combo.</p>
+                <p>❤️ Antes de cada fase, veja quem e seu amigo. Nao toque nele.</p>
+                <p>⏱ Quando o tempo acaba, voce passa para o proximo mundo.</p>
+                <p>🇺🇸 Ficou sem vidas? Um desafio de ingles pode recuperar um coracao.</p>
+                <button class="menu-button back-button" data-open-screen="start-screen" type="button">← Voltar</button>
             </div>
         </section>
 
-        <section id="game-screen" class="screen">
-            <header class="hud">
+        <section id="level-intro-screen" class="screen">
+            <div class="menu-panel intro-panel">
+                <p id="intro-world" class="world-title">🌳 Floresta Encantada</p>
+                <h2 id="intro-level">Nivel 1</h2>
+                <p id="intro-friend-line" class="friend-warning">❤️ Seu amigo nesta fase:</p>
+                <p id="intro-friend-emoji" class="friend-emoji">🐸</p>
+                <p class="menu-text">Nao toque no amigo. Capture todos os outros monstrinhos!</p>
+                <button class="primary-button" id="ready-button" type="button">Estou pronto!</button>
+            </div>
+        </section>
+
+        <section id="countdown-screen" class="screen">
+            <div class="countdown-box">
+                <p id="countdown-text">3</p>
+            </div>
+        </section>
+
+        <section id="game-screen" class="screen game-screen">
+            <header class="hud" aria-label="Status da partida">
                 <div>
-                    <span class="hud-label">Fase</span>
-                    <strong id="level-text">1</strong>
+                    <span class="hud-label">Vidas</span>
+                    <strong id="lives-text">❤️❤️❤️</strong>
                 </div>
                 <div>
                     <span class="hud-label">Pontos</span>
-                    <strong id="score-text">0</strong>
-                </div>
-                <div>
-                    <span class="hud-label">Recorde</span>
-                    <strong id="best-score-game">0</strong>
+                    <strong>⭐ <span id="score-text">0</span></strong>
                 </div>
                 <div>
                     <span class="hud-label">Tempo</span>
                     <strong>⏱ <span id="time-text">30</span></strong>
                 </div>
                 <div>
-                    <span class="hud-label">Vidas</span>
-                    <strong id="lives-text">❤️❤️❤️</strong>
+                    <span class="hud-label">Combo</span>
+                    <strong id="combo-text">x0</strong>
+                </div>
+                <div>
+                    <span class="hud-label">Nivel</span>
+                    <strong id="level-text">1</strong>
                 </div>
             </header>
 
             <div id="game-area" class="game-area" aria-label="Area do jogo">
                 <div class="level-ribbon">
-                    <span id="level-name">Floresta</span>
+                    <span id="level-name">Floresta Encantada</span>
                     <span id="lesson-hint">Arrays guardam varios monstros.</span>
                 </div>
 
+                <div id="friend-pill" class="friend-pill">
+                    ❤️ Amigo: <strong id="friend-text">🐸</strong>
+                </div>
+
                 <div id="boss-panel" class="boss-panel hidden">
-                    <span>Chefao</span>
+                    <span>👹 Chefao</span>
                     <div class="boss-bar">
                         <div id="boss-health" class="boss-health"></div>
                     </div>
@@ -104,16 +151,31 @@
             </div>
         </section>
 
+        <section id="english-screen" class="screen">
+            <div class="menu-panel english-panel">
+                <p class="eyebrow">🇺🇸 Desafio de ingles</p>
+                <h2>Recupere ❤️ +1 vida</h2>
+                <p id="english-progress" class="menu-text">Tentativa 1 de 5</p>
+                <p id="english-prompt-title" class="question-title">Qual palavra significa:</p>
+                <p id="english-word" class="question-word">DOG</p>
+                <div id="english-options" class="answer-grid"></div>
+                <p id="english-feedback" class="english-feedback" aria-live="polite"></p>
+            </div>
+        </section>
+
         <section id="end-screen" class="screen">
             <div class="menu-panel">
                 <p id="end-emoji" class="end-emoji">⭐</p>
                 <h2 id="end-title">Fim de jogo</h2>
                 <p id="end-message" class="menu-text"></p>
-                <p class="record-line">Pontuacao: <strong id="final-score">0</strong></p>
-                <p class="record-line">Recorde: <strong id="best-score-end">0</strong></p>
-                <div id="medals-end" class="medal-row"></div>
-                <button class="primary-button" id="play-again-button">▶ Jogar novamente</button>
-                <button class="menu-button" data-open-screen="start-screen">Menu inicial</button>
+                <div class="stat-list">
+                    <p>⭐ Pontuacao: <strong id="final-score">0</strong></p>
+                    <p>👾 Monstrinhos: <strong id="final-captured">0</strong></p>
+                    <p>🏆 Recorde: <strong id="best-score-end">0</strong></p>
+                </div>
+                <div id="medals-end" class="medal-list"></div>
+                <button class="primary-button" id="play-again-button" type="button">▶ Jogar novamente</button>
+                <button class="menu-button back-button" data-open-screen="start-screen" type="button">Menu inicial</button>
             </div>
         </section>
     </main>

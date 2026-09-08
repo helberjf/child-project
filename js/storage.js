@@ -51,11 +51,19 @@ function sanitizeWords(words) {
   return Object.fromEntries(
     Object.entries(words).map(([key, value]) => [
       key,
-      {
+      removeEmptyFields({
         palavra: String(value?.palavra || key),
+        portugues: value?.portugues ? String(value.portugues) : "",
+        categoria: value?.categoria ? String(value.categoria) : "",
         acertos: Number(value?.acertos) || 0,
         erros: Number(value?.erros) || 0
-      }
+      })
     ])
+  );
+}
+
+function removeEmptyFields(word) {
+  return Object.fromEntries(
+    Object.entries(word).filter(([, value]) => value !== "")
   );
 }
