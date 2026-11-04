@@ -1,82 +1,52 @@
-# Caça aos Monstrinhos
+# Monster Hunt — An Educational Browser Game
 
-![Preview do jogo](assets/images/game-preview.svg)
+![Game preview](assets/images/game-preview.svg)
 
-Jogo infantil educativo feito com HTML, CSS e JavaScript puro para criancas de aproximadamente 8 anos.
+A browser game built with HTML, CSS and JavaScript for children around age eight. Players catch monsters, protect the friendly character for each level, build combos and answer a short English vocabulary challenge to recover a life.
 
-A crianca captura monstrinhos, protege o monstro amigo de cada fase, cria combos e pode recuperar vidas respondendo um desafio rapido de ingles.
+The interface and accompanying lessons are primarily Portuguese. This repository also serves as a readable example of arrays, objects, functions, conditions and browser storage.
 
-## Como executar
+## Play locally
 
-Use um servidor local na pasta do projeto:
+Install Node.js for the built-in test runner and Python 3 for the local server. There are no npm dependencies to install.
 
 ```bash
+git clone https://github.com/helberjf/child-project.git
+cd child-project
 npm start
 ```
 
-Depois abra:
+Open `http://127.0.0.1:4173/`. The start script runs `python -m http.server 4173`; on systems where Python is named `python3`, run `python3 -m http.server 4173` directly. Use HTTP because JavaScript module imports may be blocked when opening `index.html` as a local file.
 
-```text
-http://127.0.0.1:4173/
-```
+## Gameplay walkthrough
 
-Abrir o `index.html` direto pelo explorador pode nao funcionar corretamente, porque o navegador bloqueia alguns imports de modulos JavaScript quando a pagina roda como arquivo local.
+1. Start a game and identify the friendly monster shown before the level.
+2. Wait for the countdown, capture other monsters and watch the life, timer and combo indicators.
+3. Try the English challenge when offered, then inspect the words, records and medals screens.
+4. Reload the page to inspect the locally saved progress.
 
-## Testes
+The game includes several themed worlds and monster types. Progress storage is local; it is not a shared account or an assessment of a child's learning outcomes.
+
+## Code tour and checks
+
+| Source | Responsibility |
+| --- | --- |
+| [js/game.js](js/game.js), [js/game-flow.js](js/game-flow.js) | Main loop and game transitions |
+| [js/levels.js](js/levels.js), [js/monster.js](js/monster.js) | Level setup and moving characters |
+| [js/english.js](js/english.js), [data/palavras.js](data/palavras.js) | Vocabulary questions and word data |
+| [js/storage.js](js/storage.js), [js/sounds.js](js/sounds.js) | Local persistence and audio |
+| [aulas](aulas) | Fourteen programming lessons |
+| [tests](tests) | Rules, English questions, UI helpers and layout checks |
 
 ```bash
 npm test
 ```
 
-Nao e preciso instalar bibliotecas externas.
+Tests use Node's built-in runner. They do not replace playtesting with different screen sizes, input devices and accessibility settings. Asset notes remain in [images](assets/images/README.md), [sounds](assets/sounds/README.md), [backgrounds](assets/backgrounds/README.md) and [cursors](assets/cursors/README.md).
 
-## Recursos
+## Design tradeoffs
 
-- Menu com jogar, personagens, recordes, medalhas, palavras, configuracoes e como jogar.
-- Aviso antes de cada fase mostrando qual monstrinho e amigo.
-- Countdown `3, 2, 1, VAI!` antes da acao comecar.
-- Vidas, pontuacao, cronometro e combo no HUD.
-- Monstros amigos, normais, dourados, rapidos e chefao final.
-- Mundos com fundos diferentes: floresta, gelo, vulcao, espaco, castelo e chefao.
-- Desafio de ingles para recuperar uma vida.
-- Banco com aproximadamente 200 palavras infantis em `data/palavras.js`.
-- Palavras aprendidas salvas no `localStorage`.
-- Sons centralizados em `js/sounds.js`.
-- Movimento com `requestAnimationFrame`, sem Canvas e sem bibliotecas externas.
-
-## Estrutura
-
-```text
-child-project
-├── index.html
-├── css
-│   └── style.css
-├── js
-│   ├── game.js
-│   ├── monster.js
-│   ├── levels.js
-│   ├── player.js
-│   ├── ui.js
-│   ├── sounds.js
-│   ├── english.js
-│   └── storage.js
-├── data
-│   └── palavras.js
-├── assets
-│   ├── images
-│   ├── sounds
-│   ├── cursors
-│   └── backgrounds
-├── aulas
-└── tests
-```
-
-## Ideia educativa
-
-O codigo foi separado para mostrar conceitos simples:
-
-- arrays para listas de monstros e palavras;
-- objetos para guardar vida, pontos e posicao;
-- funcoes para criar perguntas e fases;
-- `if` para decidir acerto, amigo, chefao ou recuperacao;
-- `localStorage` para salvar recordes e aprendizado.
+- **DOM animation with `requestAnimationFrame`:** familiar HTML/CSS makes characters easy to inspect and style, while many simultaneous elements can cost more layout/paint work than a dedicated rendering surface.
+- **Framework-free modules:** the source exposes core JavaScript concepts directly, but game state and lifecycle coordination must be implemented explicitly.
+- **Local progress:** records and vocabulary persist without registration or server storage, but stay on the same browser and can be cleared.
+- **Vocabulary inside gameplay:** short questions connect learning content to an immediate reward; pedagogical effectiveness is not measured by the code or test suite.
